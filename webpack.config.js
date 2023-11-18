@@ -3,13 +3,13 @@ const BundleTracker = require("webpack-bundle-tracker");
 
 module.exports = {
   entry: {
-    frontend: "./frontend/src/index",
+    frontend: "./frontend/src/index.js",
   },
   output: {
     path: path.resolve("./frontend/static/frontend/"),
     filename: "[name]-[fullhash].js",
     publicPath: "static/frontend/",
-    clean: true
+    clean: true,
   },
   plugins: [
     new BundleTracker({
@@ -20,13 +20,13 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
+        test: /\.(js|jsx|ts|tsx)$/,
         use: 'ts-loader',
         exclude: /node_modules/,
       },
     ],
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: ['.tsx', '.ts', '.js', '.jsx'],
   },
 };
