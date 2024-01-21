@@ -8,15 +8,6 @@ Project is bundled with React
   
 <br />
 
-## Docker
-1. Clone the project
-2. Run with docker-compose
-    ```bash
-    cd fopra-region-based-similarity-search
-    docker compose up -d
-    ```
-
-
 ## Manual Build
 
 > Download the code 
