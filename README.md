@@ -15,6 +15,7 @@ Project is bundled with React
     cd fopra-region-based-similarity-search
     docker compose up -d
     ```
+The webserver now runs on `localhost:8000`.
 
 
 ## Manual Build
