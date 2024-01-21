@@ -1,29 +1,29 @@
-FROM node:21-alpine
+FROM node:21-bullseye-slim
 
-RUN apk update && apk upgrade && \
-	apk add --no-cache py-virtualenv py-pip curl
+RUN apt update && apt upgrade && \
+	apt install -y --no-install-recommends python3-venv python3-pip curl
 
 COPY frontend-backend/ /frontend-backend/
 
 WORKDIR /frontend-backend
 
-# load node_modules
-RUN npm install
+RUN yarn install
 
 # build React Frontend
-RUN yarn
-RUN yarn build
+RUN yarn && \
+    yarn build
+
+RUN ls /frontend-backend
 
 # build Django Backend
-RUN virtualenv env
-RUN source env/bin/activate
-RUN pip install --break-system-packages -r requirements.txt
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --break-system-packages -r requirements.txt
 
 # setup database
-RUN python manage.py makemigrations
-RUN python manage.py migrate
+RUN python3 manage.py makemigrations && \
+    python3 manage.py migrate
 
 EXPOSE 8000
 
 # start webserver
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]

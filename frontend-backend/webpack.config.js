@@ -22,11 +22,20 @@ module.exports = {
       {
         test: /\.(js|jsx|ts|tsx)$/,
         use: 'ts-loader',
-        exclude: /node_modules/,
+        
       },
+      {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
+      },
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: 'asset/resource',
+      }
+      // Add rules for other file types below if needed (e.g., images, fonts)
     ],
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js', '.jsx'],
+    extensions: ['.tsx', '.ts', '.js', '.jsx','.css'],
   },
 };
