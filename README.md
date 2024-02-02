@@ -1,12 +1,4 @@
-# [Image search using Django & React]
-
-Project is bundled with React
-
-<br />
-
-> Feature: 
-  
-<br />
+# Image search using Django & React
 
 ## Docker
 1. Clone the project
@@ -20,52 +12,36 @@ The webserver now runs on `localhost:8000`.
 
 ## Manual Build
 
-> Download the code 
-
+Download the code
 ```bash
-$ git clone https://github.com/adambasha0/Fobra-2023.git
-$ cd similar-image-search-project
+git clone https://github.com/adambasha0/Fobra-2023.git
+cd similar-image-search-project
 ```
-
-<br />
 
 ### 👉 Build `React Frontend`
-
 ```bash
-$ yarn       # Install React
-$ yarn dev   # development build (with LIVE Reload) using webpack
-$ yarn build # production build
+yarn       # Install React
+yarn dev   # development build (with LIVE Reload) using webpack
+yarn build # production build
 ```
-
-<br />
 
 ### 👉 Build `Django Backend` 
+1. Install modules via `VENV`
+    ```bash
+    virtualenv env
+    source env/bin/activate
+    pip install -r requirements.txt
+    ```
 
-> Install modules via `VENV`  
+2. Set Up Database
+    ```bash
+    python manage.py makemigrations
+    python manage.py migrate
+    ```
 
-```bash
-$ virtualenv env
-$ source env/bin/activate
-$ pip install -r requirements.txt
-```
+3. Start the APP
+    ```bash
+    python manage.py runserver       # start the project
+    ```
 
-<br />
-
-> Set Up Database
-
-```bash
-$ python manage.py makemigrations
-$ python manage.py migrate
-```
-
-<br />
-
-> Start the APP
-
-```bash
-$ python manage.py runserver       # start the project
-```
-
-At this point, the app runs at `http://127.0.0.1:8000/`. 
-
-<br />
+At this point, the app runs at `http://127.0.0.1:8000/`.
