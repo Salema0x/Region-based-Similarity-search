@@ -3,9 +3,9 @@ FROM node:21-bullseye-slim
 RUN apt update && apt upgrade && \
 	apt install -y --no-install-recommends python3-venv python3-pip curl
 
-COPY frontend-backend/ /frontend-backend/
+COPY project/ /project/
 
-WORKDIR /frontend-backend
+WORKDIR /project
 
 RUN yarn install
 
@@ -13,7 +13,7 @@ RUN yarn install
 RUN yarn && \
     yarn build
 
-RUN ls /frontend-backend
+RUN ls /project
 
 # build Django Backend
 RUN pip install --no-cache-dir --upgrade pip && \

@@ -30,18 +30,18 @@ yarn build # production build
     ```bash
     virtualenv env
     source env/bin/activate
-    pip install -r requirements.txt
+    pip install -r ./project/requirements.txt
     ```
 
 2. Set Up Database
     ```bash
-    python manage.py makemigrations
-    python manage.py migrate
+    python ./project/manage.py makemigrations
+    python ./project/manage.py migrate
     ```
 
 3. Start the APP
     ```bash
-    python manage.py runserver       # start the project
+    python ./project/manage.py runserver       # start the project
     ```
 
 At this point, the app runs at `http://127.0.0.1:8000/`.

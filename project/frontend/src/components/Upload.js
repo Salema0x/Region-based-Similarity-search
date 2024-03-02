@@ -5,10 +5,13 @@ const Upload = () => {
     const [fileUrl, setFileUrl] = useState('');
     const [inputUrl, setInputUrl] = useState('');
     const [displayImageUrl, setDisplayImageUrl] = useState(''); // state to hold the image URL or the uploaded file URL
+    console.log('no flie');
 
     const handleFileChange = (event) => {
+        console.log('no changes applies ');
         const file = event.target.files[0];
         if (file) {
+            console.log('sw');
             const url = URL.createObjectURL(file);
             setFileUrl(url);
             setDisplayImageUrl(url); // update the displayed image
@@ -16,6 +19,7 @@ const Upload = () => {
     };
 
     const handleUrlChange = (event) => {
+        console.log('boi');
         const url = event.target.value;
         setInputUrl(url);
         setDisplayImageUrl(url); // update the displayed image
