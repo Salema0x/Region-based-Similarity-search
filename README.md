@@ -14,8 +14,8 @@ The webserver now runs on `localhost:8000`.
 
 Download the code
 ```bash
-git clone https://github.com/adambasha0/Fobra-2023.git
-cd similar-image-search-project
+git clone https://github.com/umr-ds/fopra-region-based-similarity-search.git
+cd fopra-region-based-similarity-search
 ```
 
 ### 👉 Build `React Frontend`
@@ -30,6 +30,12 @@ yarn build # production build
     ```bash
     virtualenv env
     source env/bin/activate
+    pip install -r ./project/requirements.txt
+    ```
+    (or on windows)
+    ```bash
+    python -m venv venv
+    ./venv/Scripts/activate
     pip install -r ./project/requirements.txt
     ```
 
