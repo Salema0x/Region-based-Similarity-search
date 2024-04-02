@@ -1,8 +1,8 @@
 
 import React from 'react';
-import Navbar from './components/navbar';
-import Uploadbox from './components/Uploadbox';
 import Footer from './container/Footer';
+import Navbar from './container/navbar';
+import Uploadbox from './components/Uploadbox';
 
 function App() {
   return (

@@ -1,5 +1,5 @@
 import 'bulma/css/bulma.min.css';
-import ai from '../assets/ai.png'
+import ai from '../assets/ai.png';
 
 import React from 'react';
 
