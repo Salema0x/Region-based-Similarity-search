@@ -1,61 +1,53 @@
-# [Image search using Django & React]
+# Image search using Django & React
 
-Project is bundled with React
+## Docker
+1. Clone the project
+2. Run with docker-compose
+    ```bash
+    cd fopra-region-based-similarity-search
+    docker compose up -d
+    ```
+The webserver now runs on `localhost:8000`.
 
-<br />
-
-> Feature: 
-  
-<br />
 
 ## Manual Build
 
-> Download the code 
-
+Download the code
 ```bash
-$ git clone https://github.com/adambasha0/Fobra-2023.git
-$ cd similar-image-search-project
+git clone https://github.com/umr-ds/fopra-region-based-similarity-search.git
+cd fopra-region-based-similarity-search
 ```
-
-<br />
 
 ### 👉 Build `React Frontend`
-
 ```bash
-$ yarn       # Install React
-$ yarn dev   # development build (with LIVE Reload) using webpack
-$ yarn build # production build
+yarn       # Install React
+yarn dev   # development build (with LIVE Reload) using webpack
+yarn build # production build
 ```
-
-<br />
 
 ### 👉 Build `Django Backend` 
+1. Install modules via `VENV`
+    ```bash
+    virtualenv env
+    source env/bin/activate
+    pip install -r ./project/requirements.txt
+    ```
+    (or on windows)
+    ```bash
+    python -m venv venv
+    ./venv/Scripts/activate
+    pip install -r ./project/requirements.txt
+    ```
 
-> Install modules via `VENV`  
+2. Set Up Database
+    ```bash
+    python ./project/manage.py makemigrations
+    python ./project/manage.py migrate
+    ```
 
-```bash
-$ virtualenv env
-$ source env/bin/activate
-$ pip install -r requirements.txt
-```
+3. Start the APP
+    ```bash
+    python ./project/manage.py runserver       # start the project
+    ```
 
-<br />
-
-> Set Up Database
-
-```bash
-$ python manage.py makemigrations
-$ python manage.py migrate
-```
-
-<br />
-
-> Start the APP
-
-```bash
-$ python manage.py runserver       # start the project
-```
-
-At this point, the app runs at `http://127.0.0.1:8000/`. 
-
-<br />
+At this point, the app runs at `http://127.0.0.1:8000/`.

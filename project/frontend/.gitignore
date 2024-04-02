@@ -4,4 +4,3 @@ env/
 frontend/static/frontend/
 *.sqlite3
 webpack-stats.json
-.DS_Store

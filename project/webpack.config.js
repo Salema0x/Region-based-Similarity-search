@@ -38,4 +38,9 @@ module.exports = {
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.jsx','.css'],
   },
+    watchOptions: {
+    aggregateTimeout: 200, // Delay before rebuilding
+    ignored: /node_modules/, // Ignore changes to node_modules
+    poll: 1000, // Check for changes every second
+  },
 };
