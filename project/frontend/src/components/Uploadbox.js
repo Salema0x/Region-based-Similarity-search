@@ -4,7 +4,6 @@ import SelectAndCrop from "./SelectAndCrop";
 class Uploadbox extends Component {
     state = {
         croppedImgSrc  : "",
-        croppedImgSrc2 : "",
         displayImageUrl: "",
         fileInputImage : "",
         inputUrl       : "",
@@ -23,6 +22,7 @@ class Uploadbox extends Component {
         if ( ["image/jpeg", "image/jpg", "image/png"].includes(file.type) ) {
             if(isFromLink){
                 this.setState({
+                    fileInputImage : "",
                     displayImageUrl: URL.createObjectURL(file),
                     inputUrl       : url,
                     isError        : false
@@ -31,6 +31,7 @@ class Uploadbox extends Component {
                 this.setState({
                     fileInputImage : URL.createObjectURL(file),
                     displayImageUrl: URL.createObjectURL(file),
+                    inputUrl       : "",
                     isError        : false
                 });
             }
@@ -48,12 +49,10 @@ class Uploadbox extends Component {
         this.setState({croppedImgSrc : croppedSrc});
     };
 
-    getCroppedImgSecond = croppedSrc => {
-        this.setState({croppedImgSrc2 : croppedSrc});
-    };
-
     handleUrlChange = async (event) => {
+        event.preventDefault();
         const url = event.target.value;
+        this.setState({inputUrl       : url});
         let file = await fetch(url)
                         .then(r => r.blob())
                         .then(blobFile => new File([blobFile], "fileNameGoesHere", { type: blobFile.type }))
@@ -79,7 +78,14 @@ class Uploadbox extends Component {
             this.prepareImg(e.target.files[0], false);
         }
     };
-    
+
+    preventDefaultOnEnter = e =>{
+        if (e.which === 13) {
+            e.preventDefault && e.preventDefault();
+            e.stopPropagation && e.stopPropagation();
+            return false;
+        }
+    }
 
     render() {
         const {displayImageUrl, fileInputImage, inputUrl, isError, dragActive} = this.state;
@@ -120,7 +126,7 @@ class Uploadbox extends Component {
                                                         <div className=" container field">
                                                             <label className="label"> Enter an external URL instead </label>
                                                             <div className="control">
-                                                                <input className="input" type="text" placeholder="Enter URL to image" onChange={this.handleUrlChange} />
+                                                                <input className="input" type="text" placeholder="Enter URL to image" value={inputUrl} onChange={this.handleUrlChange} onKeyDown={this.preventDefaultOnEnter}/>
                                                             </div>
                                                         </div>
                                                     </div>
