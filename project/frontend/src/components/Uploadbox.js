@@ -6,6 +6,7 @@ class Uploadbox extends Component {
         croppedImgSrc  : "",
         displayImageUrl: "",
         fileInputImage : "",
+        fileInputUrl   : "",
         inputUrl       : "",
         isError        : false,
         dragActive     : false
@@ -13,15 +14,22 @@ class Uploadbox extends Component {
     
     form = createRef();
 
-    onSelectImage = event => {
+    onSelectImage = async(event) => {
+        event.preventDefault();
         const file = event.target.files[0];
-        this.prepareImg(file, false);
+        await new Promise(resolve => setTimeout(resolve, 1));
+        this.prepareImg(file, false, event.target.value);
     };
 
     prepareImg = (file, isFromLink, url) => {
         if ( ["image/jpeg", "image/jpg", "image/png"].includes(file.type) ) {
+            this.setState({
+                displayImageUrl : "",
+                fileInputImage  : ""
+            });
             if(isFromLink){
                 this.setState({
+                    fileInputUrl   : "",
                     fileInputImage : "",
                     displayImageUrl: URL.createObjectURL(file),
                     inputUrl       : url,
@@ -29,6 +37,7 @@ class Uploadbox extends Component {
                 });
             } else {
                 this.setState({
+                    fileInputUrl   : url,
                     fileInputImage : URL.createObjectURL(file),
                     displayImageUrl: URL.createObjectURL(file),
                     inputUrl       : "",
@@ -42,7 +51,10 @@ class Uploadbox extends Component {
 
     removeImg = () => {
         this.form.current.reset();
-        this.setState({fileInputImage : ""});
+        this.setState({
+            fileInputImage : "", 
+            fileInputUrl : ""
+        });
     };
 
     getCroppedImg = croppedSrc => {
@@ -75,7 +87,7 @@ class Uploadbox extends Component {
         e.stopPropagation();
         this.setState({dragActive : false});
         if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-            this.prepareImg(e.target.files[0], false);
+            this.prepareImg(e.target.files[0], false, e.target.value);
         }
     };
 
@@ -88,7 +100,7 @@ class Uploadbox extends Component {
     }
 
     render() {
-        const {displayImageUrl, fileInputImage, inputUrl, isError, dragActive} = this.state;
+        const {displayImageUrl, fileInputImage, fileInputUrl, inputUrl, isError, dragActive} = this.state;
         return (
             <div className="container full-display">
                 <form ref={this.form}>
@@ -106,7 +118,7 @@ class Uploadbox extends Component {
                                                 <div className="card-content">
                                                     <div className="file is-boxed">
                                                         <label id="label-file-upload" htmlFor="input-file-upload" className={dragActive ? "drag-active" : "" }>
-                                                            <input className="file-input" id="input-file-upload" type="file" name="resume" accept="image/png, image/jpeg" multiple={false} onChange={this.onSelectImage} />
+                                                            <input className="file-input" id="input-file-upload" type="file" name="resume" accept="image/png, image/jpeg" multiple={false} value={fileInputUrl} onChange={this.onSelectImage} />
                                                             <p>Drag and drop your image file here 
                                                                 <br/> or  
                                                                 <br/> 
