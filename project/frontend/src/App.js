@@ -1,16 +1,16 @@
 
 import React from 'react';
 import Navbar from './components/navbar';
-import Upload from './components/Upload';
+import Uploadbox from './components/Uploadbox';
 import Footer from './container/Footer';
 
 function App() {
   return (
     <div>
       <Navbar />
-      <Upload />
+      <Uploadbox />
       <Footer />
     </div>
-      )
+  )
 }
 export default App;
