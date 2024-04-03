@@ -4,7 +4,8 @@ import React, {PureComponent} from 'react';
 // crop image component
 class CropImageSearch extends PureComponent {
     state = {
-        radioValue: 'searchArea'
+        radioValue      : 'searchArea',
+        numberResults   :  100
     }
 
     imageObject = new Image();
@@ -63,6 +64,13 @@ class CropImageSearch extends PureComponent {
         getCroppedImg(croppedSrc);
     };
 
+    numberResultsChange = e => {
+        const enterdNumberResult = e.target.value;
+        this.setState({
+            numberResults: enterdNumberResult < 1 ? 1 : enterdNumberResult
+        });
+    }
+
     handleRadioChange = (e) => {
         this.setState({
           radioValue: e.target.value
@@ -86,7 +94,7 @@ class CropImageSearch extends PureComponent {
 
     render() {
         const {width, height, x, y} = this.props;
-        const { radioValue } = this.state;
+        const { radioValue, numberResults } = this.state;
         return (
             <><div className='form-group'>
                 <div className='radio'>
@@ -109,9 +117,26 @@ class CropImageSearch extends PureComponent {
                 </div><br/>
             </div>
             <div className="crop-image-component-wrapper">
-                <button className="button is-success" onClick={this.executeApp}>
-                    run
-                </button>
+                <center>
+                { (radioValue !== 'justCrop') ? 
+                    (<table>
+                        <tbody>
+                            <tr>
+                                <td> Number of results </td>
+                                <td rowSpan="2">
+                                    <button className="button is-success" onClick={this.executeApp}> run </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td> <input type="number" value={numberResults} placeholder="Enter the number of results" onChange={this.numberResultsChange} /> </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    ) : (
+                        <button className="button is-success" onClick={this.executeApp}> run </button>
+                    )
+                }
+                </center>
             </div></>
         );
     }
