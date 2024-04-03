@@ -1,5 +1,5 @@
 import React, {PureComponent, createRef, Fragment} from 'react';
-import CropImage from "./CropImage";
+import CropImageSearch from "./CropImageSearch";
 
 
 class SelectAndCrop extends PureComponent {
@@ -1265,7 +1265,7 @@ class SelectAndCrop extends PureComponent {
                                 </div>
                             </div>
                         </div>
-                        <CropImage
+                        <CropImageSearch
                             imageSrc={image}
                             width={width}
                             height={height}

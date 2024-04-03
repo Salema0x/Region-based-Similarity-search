@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 
 
 // crop image component
-class CropImage extends PureComponent {
+class CropImageSearch extends PureComponent {
     state = {
         radioValue: 'searchArea'
     }
@@ -117,4 +117,4 @@ class CropImage extends PureComponent {
     }
 }
 
-export default CropImage;
+export default CropImageSearch;
