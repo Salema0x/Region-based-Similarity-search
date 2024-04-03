@@ -2,7 +2,11 @@ import React, {PureComponent} from 'react';
 
 
 // crop image component
-class CropImage extends PureComponent {
+class CropImageSearch extends PureComponent {
+    state = {
+        radioValue: 'searchArea'
+    }
+
     imageObject = new Image();
 
     componentDidMount() {
@@ -59,22 +63,58 @@ class CropImage extends PureComponent {
         getCroppedImg(croppedSrc);
     };
 
+    handleRadioChange = (e) => {
+        this.setState({
+          radioValue: e.target.value
+        });
+    };
+
+    executeApp = (e) => {
+        e.preventDefault();
+        const {width, height, x, y} = this.props;
+        switch (this.state.radioValue){
+            case 'searchArea':
+                //box prompt
+                break;
+            case 'searchAll':
+                //image query
+                break;
+            default:
+                this.getImagePortion(this.imageObject, width, height, x, y);
+        }
+    };
+
     render() {
         const {width, height, x, y} = this.props;
-
+        const { radioValue } = this.state;
         return (
-            <div className="crop-image-component-wrapper">
-                <button
-                    className="btn btn-danger"
-                    onClick={() =>
-                        this.getImagePortion(this.imageObject, width, height, x, y)
-                    }
-                >
-                    Crop
-                </button>
+            <><div className='form-group'>
+                <div className='radio'>
+                    <label>
+                        <input type='radio' value='searchArea' checked={radioValue === 'searchArea'} onChange={this.handleRadioChange} />
+                        Search for similar images for the selected area
+                    </label>
+                </div><br/>
+                <div className='radio'>
+                    <label>
+                        <input type='radio' value='searchAll' checked={radioValue === 'searchAll'} onChange={this.handleRadioChange} />
+                        Search for similar images for the entire image
+                    </label>
+                </div><br/>
+                <div className='radio'>
+                    <label>
+                        <input type='radio' value='justCrop' checked={radioValue === 'justCrop'} onChange={this.handleRadioChange} />
+                        Just crop
+                    </label>
+                </div><br/>
             </div>
+            <div className="crop-image-component-wrapper">
+                <button className="button is-success" onClick={this.executeApp}>
+                    run
+                </button>
+            </div></>
         );
     }
 }
 
-export default CropImage;
+export default CropImageSearch;
