@@ -143,31 +143,35 @@ class Uploadbox extends Component {
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div className="column">
-                                            <div className="bd-notification is-info">
                                                 {displayImageUrl && (
                                                         <Fragment>
-                                                            <button
-                                                                className="btn btn-danger remove-image"
-                                                                onClick={this.removeImg}
-                                                            >
-                                                                Remove image
-                                                            </button>
-                                                            <SelectAndCrop
-                                                                getCroppedImg={this.getCroppedImg}
-                                                                image={displayImageUrl}
-                                                            />
-                                                            <div className="button is-success">
-                                                                <a rel="noopener noreferrer">Search similar images</a>
+                                                            <div className="card-footer">
+                                                                <div className="card-footer-item">
+                                                                    <div className=" container field">
+                                                                    <button className="btn btn-danger remove-image"  onClick={this.removeImg} >
+                                                                        Remove image
+                                                                    </button>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </Fragment>
                                                     )
                                                 }
                                             </div>
                                         </div>
-                                    
+                                        <div className="column">
+                                            <div className="bd-notification is-info">
+                                                {displayImageUrl && (
+                                                        <Fragment>
+                                                            <SelectAndCrop
+                                                                getCroppedImg={this.getCroppedImg}
+                                                                image={displayImageUrl}
+                                                            />
+                                                        </Fragment>
+                                                    )
+                                                }
+                                            </div>
+                                        </div>
                                 </div>   
                             </div>
                         </div>
