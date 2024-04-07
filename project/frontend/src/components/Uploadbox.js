@@ -166,6 +166,7 @@ class Uploadbox extends Component {
                                                             <SelectAndCrop
                                                                 getCroppedImg={this.getCroppedImg}
                                                                 image={displayImageUrl}
+                                                                sendDataToParent={this.props.sendDataToParent}
                                                             />
                                                         </Fragment>
                                                     )

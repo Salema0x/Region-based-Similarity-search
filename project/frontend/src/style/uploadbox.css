@@ -139,6 +139,15 @@ form {
   margin: 20px 0;
 }
 
+.crop-image-component-wrapper table tbody tr td{
+  border: none;
+  padding: 0 10px;
+  vertical-align: bottom;
+}
+
+.form-group{
+  text-align: left;
+}
 /******************CropImageSearch end styles*****************/
 /******************buttons styles*****************/
 .btn {
