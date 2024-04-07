@@ -1,0 +1,12 @@
+.ctnLeft{
+    float: left;
+}
+
+.ctnRight{
+    float: right;
+}
+
+.small{
+    font-size: 80%;
+    font-weight: 400;
+}
