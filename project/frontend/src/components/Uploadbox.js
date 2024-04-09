@@ -28,6 +28,13 @@ class Uploadbox extends Component {
         const file = event.target.files[0];
         await new Promise(resolve => setTimeout(resolve, 1));
         this.prepareImg(file, false, event.target.value);
+
+        //update the url in the browser's search bar
+        const queryParameters = new URLSearchParams(window.location.search)
+        const currentSearchImgUrl = queryParameters.get("imgurl");
+        if(currentSearchImgUrl){
+            window.history.pushState({}, document.title, "/");
+        }
     };
 
     prepareImg = (file, isFromLink, url) => {
@@ -85,6 +92,9 @@ class Uploadbox extends Component {
                         .then(r => r.blob())
                         .then(blobFile => new File([blobFile], "fileNameGoesHere", { type: blobFile.type }))
         this.prepareImg(file, true, url);
+        
+         //update the url in the browser's search bar
+         window.history.pushState({}, document.title, '?imgurl=' + encodeURI(url));
     };
 
     handleDrag = e => {
