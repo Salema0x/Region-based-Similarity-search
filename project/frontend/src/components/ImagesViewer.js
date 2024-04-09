@@ -74,7 +74,7 @@ class ImagesViewer extends Component{
                                     />
                                 </span>
                             </td>
-                            <td> <a className="searchbutton" href="">Search</a> </td>
+                            <td> <a className="searchbutton" href={encodeURI(window.location.origin + window.location.pathname +'?imgurl='+currentImageData.thumbnailSrc)}>Search</a> </td>
                         </tr>
                     </tbody>
                 </table>

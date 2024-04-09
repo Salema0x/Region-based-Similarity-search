@@ -89,7 +89,7 @@ class ImagesCard extends Component  {
         return (
             <div className='itemImagesCard'>
                 <img className='imagesCard' src={this.props.owndata.thumbnailSrc} onClick={()=>this.props.viewImage(this.props.owndata)} />
-                <span className='caption'> <a className='searchbutton' href=''>Search</a> </span>
+                <span className='caption'> <a className='searchbutton' href={encodeURI(window.location.origin + window.location.pathname +'?imgurl='+this.props.owndata.thumbnailSrc)}>Search</a> </span>
             </div>
         )
     }

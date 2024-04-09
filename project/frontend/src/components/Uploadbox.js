@@ -12,6 +12,15 @@ class Uploadbox extends Component {
         dragActive     : false
     };
     
+    componentDidMount() {
+        if(this.props.searchImgUrl){
+            this.setState({
+                inputUrl : this.props.searchImgUrl
+            });
+            this.handleUrlSearch();
+        }
+    }
+
     form = createRef();
 
     onSelectImage = async(event) => {
@@ -61,6 +70,13 @@ class Uploadbox extends Component {
         this.setState({croppedImgSrc : croppedSrc});
     };
 
+    handleUrlSearch = async () => {
+        let file = await fetch(this.props.searchImgUrl)
+                        .then(r => r.blob())
+                        .then(blobFile => new File([blobFile], "fileNameGoesHere", { type: blobFile.type }))
+        this.prepareImg(file, true, this.props.searchImgUrl);
+    };
+
     handleUrlChange = async (event) => {
         event.preventDefault();
         const url = event.target.value;
@@ -68,7 +84,6 @@ class Uploadbox extends Component {
         let file = await fetch(url)
                         .then(r => r.blob())
                         .then(blobFile => new File([blobFile], "fileNameGoesHere", { type: blobFile.type }))
-        console.log(file);
         this.prepareImg(file, true, url);
     };
 
