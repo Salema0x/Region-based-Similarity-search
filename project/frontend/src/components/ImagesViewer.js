@@ -20,6 +20,7 @@ class ImagesViewer extends Component{
   }
 
   render(){
+    const similaritypercent = ( parseFloat(this.props.datachosen.similarity)*100 ) + " %";
     return(
       <>
         <div className='bgImgViewer'>
@@ -44,7 +45,7 @@ class ImagesViewer extends Component{
                         <tr>
                             <td> <span className='progress-label'>Similarity</span></td>
                             <td> 
-                                <span className="progress-container">
+                                <span className="progress-container" title={similaritypercent}>
                                     <ProgressBar 
                                         progress={this.props.datachosen.similarity}
                                         goal='1'

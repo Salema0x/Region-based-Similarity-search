@@ -99,6 +99,8 @@ class CropImageSearch extends PureComponent {
         const formData = new FormData();
         formData.append("image", file);
 
+        let dataduration = Date.now();
+
         switch (this.state.radioValue){
 
             //box prompt: query data from server
@@ -119,7 +121,7 @@ class CropImageSearch extends PureComponent {
             //image query: query data from server
             case 'searchAll':
                 try{
-                    const result = await fetch(window.location.origin + window.location.pathname + '/api/upload/',{
+                    const result = await fetch(window.location.origin + window.location.pathname + 'api/upload/',{
                         method: 'POST',
                         body: formData
                     });
@@ -186,8 +188,8 @@ class CropImageSearch extends PureComponent {
                 similarity      : '0.77'
             }
         ];
-        let datanumber =  "" + Math.round(Math.random() * 10) / 10;
-        let dataduration = "" + Math.round(Math.random() * 10) / 10;
+        let datanumber = pulledData.length;
+        dataduration = Math.round((Date.now() - dataduration) /100) /10;
         this.props.sendDataToParent(pulledData, datanumber, dataduration);
     };
 
