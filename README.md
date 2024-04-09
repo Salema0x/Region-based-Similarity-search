@@ -15,7 +15,7 @@ The webserver now runs on `localhost:8000`.
 Download the code
 ```bash
 git clone https://github.com/umr-ds/fopra-region-based-similarity-search.git
-cd fopra-region-based-similarity-search
+cd fopra-region-based-similarity-search/project
 ```
 
 ### 👉 Build `React Frontend`
@@ -30,24 +30,24 @@ yarn build # production build
     ```bash
     virtualenv env
     source env/bin/activate
-    pip install -r ./project/requirements.txt
+    pip install -r ./requirements.txt
     ```
     (or on windows)
     ```bash
     python -m venv venv
     ./venv/Scripts/activate
-    pip install -r ./project/requirements.txt
+    pip install -r ./requirements.txt
     ```
 
 2. Set Up Database
     ```bash
-    python ./project/manage.py makemigrations
-    python ./project/manage.py migrate
+    python ./manage.py makemigrations
+    python ./manage.py migrate
     ```
 
 3. Start the APP
     ```bash
-    python ./project/manage.py runserver       # start the project
+    python ./manage.py runserver       # start the project
     ```
 
 At this point, the app runs at `http://127.0.0.1:8000/`.
