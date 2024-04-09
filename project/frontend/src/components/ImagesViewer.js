@@ -1,10 +1,12 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import Utils from './Utils';
 
 class ImagesViewer extends Component{
+
   state = {
-    imagesData         : {},
-    currentImageData   : {}
+          imagesData       : this.props.data,
+          currentImageData : this.props.datachosen,
+          currentIndexData : this.getDataIndex(this.props.data, this.props.datachosen)
   };
 
   openFullscreen(){
@@ -19,26 +21,46 @@ class ImagesViewer extends Component{
     Utils.closeFullscreen();
   }
 
+  getDataIndex(data, chosenData){
+      for(let i=0; i<data.length; i++){
+        if(data[i] == chosenData){
+          return i+1;
+        }
+      }
+      return 0;
+  }
+
+  loadDataByIndex = (data, index) => {
+    if(index>0 && index<=data.length){
+      this.setState({
+        currentImageData: data[index-1],
+        currentIndexData: index
+      });
+    }
+  }
+  
   render(){
-    const similaritypercent = ( parseFloat(this.props.datachosen.similarity)*100 ) + " %";
+    const {imagesData, currentImageData, currentIndexData} = this.state;
+    const similaritypercent = ( parseFloat(currentImageData.similarity)*100 ) + " %";
+
     return(
       <>
         <div className='bgImgViewer'>
             <div className='topBarImgViewer'>
-                <span className='ctnLeft'>6/7</span>
+                <span className='ctnLeft'> {currentIndexData} / {imagesData.length} </span>
                 <span className='ctnRight' id='closeImgViewer' onClick={this.props.closeViewer}>🞩</span>
                 <span className='ctnRight' id='openFullScreen' onClick={this.openFullscreen}>⛶</span>
                 <span className='ctnRight' id='closeFullScreen' onClick={this.closeFullscreen}> <sup>⌟</sup><sub>⌜</sub> </span>
             </div>
-            <button className='btnSlideLeftImg' title='Previous'></button>
+            <button className='btnSlideLeftImg' title='Previous' onClick={() => this.loadDataByIndex(imagesData, (currentIndexData-1))}></button>
             <div className='ctnImgViewer'>
-                <img src={this.props.datachosen.enlargedSrc}></img>
+                <img src={currentImageData.enlargedSrc}></img>
             </div>
-            <button className='btnSlideRightImg' title='Next'></button>
+            <button className='btnSlideRightImg' title='Next' onClick={() => this.loadDataByIndex(imagesData, (currentIndexData+1))} ></button>
             <div className='captionImgViewer'>
-                <div className="captionImgInfos">Title: <b>{this.props.datachosen.title}</b> <br/> 
-                    Author: <span dangerouslySetInnerHTML={{__html: this.props.datachosen.author}} ></span>
-                    <p dangerouslySetInnerHTML={{__html: this.props.datachosen.license}}></p>
+                <div className="captionImgInfos">Title: <b>{currentImageData.title}</b> <br/> 
+                    Author: <span dangerouslySetInnerHTML={{__html: currentImageData.author}} ></span>
+                    <p dangerouslySetInnerHTML={{__html: currentImageData.license}}></p>
                 </div>
                 <table className="progress-infos">
                     <tbody>
@@ -47,7 +69,7 @@ class ImagesViewer extends Component{
                             <td> 
                                 <span className="progress-container" title={similaritypercent}>
                                     <ProgressBar 
-                                        progress={this.props.datachosen.similarity}
+                                        progress={currentImageData.similarity}
                                         goal='1'
                                     />
                                 </span>
