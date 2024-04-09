@@ -3,7 +3,6 @@ import Footer from './container/Footer';
 import Navbar from './container/navbar';
 import Uploadbox from './components/Uploadbox';
 import ImagesGrid from './components/ImagesGrid';
-import ImagesViewer from './components/ImagesViewer';
 
 
 class App extends Component{
@@ -24,13 +23,15 @@ class App extends Component{
       });
     }
     const {imagesData, datanumber, dataduration, counterExecution} = this.state;
+    const queryParameters = new URLSearchParams(window.location.search)
+    const searchImgUrl = queryParameters.get("imgurl");
 
     return(
       <>
         {
           <Fragment>
             <Navbar />
-            <Uploadbox sendDataToParent={handleSearchResults} />
+            <Uploadbox sendDataToParent={handleSearchResults} searchImgUrl={searchImgUrl ? decodeURI(searchImgUrl) : ''}/>
             { 
               (counterExecution % 2 == 0) ? 
               ( <ImagesGrid data={imagesData} datanumber={datanumber} dataduration={dataduration} />) : 
