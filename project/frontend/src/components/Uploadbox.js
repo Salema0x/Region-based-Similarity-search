@@ -1,5 +1,6 @@
 import React, {Component, createRef, Fragment} from 'react';
 import SelectAndCrop from "./SelectAndCrop";
+import { LoarderBar } from './LoadingAnimation';
 
 class Uploadbox extends Component {
     state = {
@@ -9,13 +10,15 @@ class Uploadbox extends Component {
         fileInputUrl   : "",
         inputUrl       : "",
         isError        : false,
+        isLoading      : false,
         dragActive     : false
     };
     
     componentDidMount() {
         if(this.props.searchImgUrl){
             this.setState({
-                inputUrl : this.props.searchImgUrl
+                inputUrl : this.props.searchImgUrl,
+                isLoading: true
             });
             this.handleUrlSearch();
         }
@@ -49,6 +52,7 @@ class Uploadbox extends Component {
                     fileInputImage : "",
                     displayImageUrl: URL.createObjectURL(file),
                     inputUrl       : url,
+                    isLoading      : false,
                     isError        : false
                 });
             } else {
@@ -61,7 +65,10 @@ class Uploadbox extends Component {
                 });
             }
         } else {
-            this.setState({isError : true});
+            this.setState({
+                isError  : true, 
+                isLoading: false
+            });
         }
     };
 
@@ -87,7 +94,10 @@ class Uploadbox extends Component {
     handleUrlChange = async (event) => {
         event.preventDefault();
         const url = event.target.value;
-        this.setState({inputUrl       : url});
+        this.setState({
+            inputUrl       : url,
+            isLoading      : true
+        });
         let file = await fetch(url)
                         .then(r => r.blob())
                         .then(blobFile => new File([blobFile], "fileNameGoesHere", { type: blobFile.type }))
@@ -125,7 +135,7 @@ class Uploadbox extends Component {
     }
 
     render() {
-        const {displayImageUrl, fileInputImage, fileInputUrl, inputUrl, isError, dragActive} = this.state;
+        const {displayImageUrl, fileInputImage, fileInputUrl, inputUrl, isError, isLoading, dragActive} = this.state;
         return (
             <div className="container full-display">
                 <form ref={this.form}>
@@ -182,6 +192,9 @@ class Uploadbox extends Component {
                                                         </Fragment>
                                                     )
                                                 }
+                                                {isLoading && 
+                                                    <> <LoarderBar /> </>
+                                                }
                                             </div>
                                         </div>
                                         <div className="column">
@@ -192,6 +205,7 @@ class Uploadbox extends Component {
                                                                 getCroppedImg={this.getCroppedImg}
                                                                 image={displayImageUrl}
                                                                 sendDataToParent={this.props.sendDataToParent}
+                                                                setLoaderImages={this.props.setLoaderImages}
                                                             />
                                                         </Fragment>
                                                     )

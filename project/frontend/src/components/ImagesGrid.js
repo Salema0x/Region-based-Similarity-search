@@ -41,7 +41,9 @@ class ImagesGrid extends Component {
             <>
           <div className="imagesgrid">
             <TitleGrid datanumber={ numberResults } dataduration={ durationResults } />
-            <Deck data={ imagesObjs } openImageViewer={openImageViewer}/>
+            {   parseInt(numberResults) > 0 && 
+                <Deck data={ imagesObjs } openImageViewer={openImageViewer}/>
+            }
             {   
                 isViewingImage && 
                 <ImagesViewer data={ imagesObjs } datachosen={ imageDataChosen } viewImage={openImageViewer} closeViewer={closeImageViewer}/>
@@ -60,7 +62,11 @@ class TitleGrid extends Component {
     render() {
       return (
         <div className='titlegrid'>
-            <h3>{this.props.datanumber} images found, took {this.props.dataduration} seconds</h3>
+            {
+            parseInt(this.props.datanumber) > 0 ?
+            (<h3>{this.props.datanumber} images found, took {this.props.dataduration} seconds</h3>) : 
+            (<h3> No similar image found</h3>)
+            }
         </div>
       )
     }

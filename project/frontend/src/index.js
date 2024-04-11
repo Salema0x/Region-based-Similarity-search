@@ -1,6 +1,7 @@
 import "./style/uploadbox.css";
 import "./style/imagesgrid.css";
 import "./style/imagesviewer.css";
+import "./style/loadinganimation.css";
 import React from "react";
 import * as ReactDOM from "react-dom";
 import App from "./App";
