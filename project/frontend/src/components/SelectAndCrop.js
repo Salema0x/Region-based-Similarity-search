@@ -1274,6 +1274,7 @@ class SelectAndCrop extends PureComponent {
                             setIsCropped={this.setIsCropped}
                             getCroppedImg={this.getCroppedImg}
                             sendDataToParent={this.props.sendDataToParent}
+                            setLoaderImages={this.props.setLoaderImages}
                         />
                     </Fragment>
                 ) : (

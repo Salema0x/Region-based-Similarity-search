@@ -80,6 +80,8 @@ class CropImageSearch extends PureComponent {
 
     executeApp = async (e) => {
         e.preventDefault();
+        
+        this.props.setLoaderImages(true);
 
         const {imageSrc, width, height, x, y} = this.props;
 
