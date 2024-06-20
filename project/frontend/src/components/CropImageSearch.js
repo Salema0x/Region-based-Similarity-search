@@ -84,6 +84,7 @@ class CropImageSearch extends PureComponent {
         this.props.setLoaderImages(true);
 
         const {imageSrc, width, height, x, y} = this.props;
+        const { numberResults } = this.state;
 
         let bottom_right_x = x + width;
         let bottom_right_y = y + height;
@@ -97,24 +98,21 @@ class CropImageSearch extends PureComponent {
         let file = await fetch(imageSrc)
                         .then(r => r.blob())
                         .then(blobFile => new File([blobFile], "fileNameGoesHere", { type: blobFile.type }))
-        
+
         const formData = new FormData();
         formData.append("image", file);
-
-        let dataduration = Date.now();
+        formData.append("maxResults", numberResults);
 
         switch (this.state.radioValue){
-
             //box prompt: query data from server
             case 'searchArea':
                 formData.append("boxes", boxes);
                 try{
-                    const result = await fetch(window.location.origin + window.location.pathname +'api/draw/',{
+                    const result = await fetch(window.location.origin + window.location.pathname +'api/search_image_box/',{
                         method: 'POST',
                         body: formData
                     });
-                    //pulledData = await result.json();
-                    console.log(result);
+                    pulledData = await result.json();
                 } catch (error) {
                     console.error(error);
                 }
@@ -123,12 +121,11 @@ class CropImageSearch extends PureComponent {
             //image query: query data from server
             case 'searchAll':
                 try{
-                    const result = await fetch(window.location.origin + window.location.pathname + 'api/upload/',{
+                    const result = await fetch(window.location.origin + window.location.pathname + 'api/search/',{
                         method: 'POST',
                         body: formData
                     });
                     pulledData = await result.json();
-                    console.log(pulledData);
                 } catch (error) {
                     console.error(error);
                 }
@@ -140,7 +137,9 @@ class CropImageSearch extends PureComponent {
         }
 
         //test data //todo remove all the following instructions from this function
-        pulledData = [
+        const dummyData = [{
+            duration: 0.15,
+            images: [
             {
                 thumbnailSrc    : 'https://picsum.photos/id/234/300/300',
                 enlargedSrc     : 'https://picsum.photos/id/234/1024/1024',
@@ -188,11 +187,14 @@ class CropImageSearch extends PureComponent {
                 author          : '<a href="https://www.flickr.com/people/courtbean/">Courtney Boyd Myers</a> (<a href="https://creativecommons.org/licenses/by/2.0/">License</a>)',
                 license         : '<span className="small">This image is listed in <a href="https://storage.googleapis.com/openimages/web/index.html">Open Images Dataset</a> as having a CC BY 2.0 license</span>',
                 similarity      : '0.77'
-            }
-        ];
-        let datanumber = pulledData.length;
-        dataduration = Math.round((Date.now() - dataduration) /100) /10;
-        this.props.sendDataToParent(pulledData, datanumber, dataduration);
+            }],
+            thumbs_url:[], 
+            images_url:[]
+        }];
+        pulledData = pulledData.length > 0 ? pulledData : dummyData;
+        console.log(pulledData);
+        this.props.sendDataToParent(pulledData, pulledData.length, pulledData.duration);
+        //this.props.sendDataToParent(pulledData, pulledData.images.length, pulledData.duration);
     };
 
     render() {
