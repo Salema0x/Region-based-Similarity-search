@@ -1,9 +1,0 @@
-node_modules/
-__pycache__
-env/
-venv/
-project/frontend/static/
-project/media_root/local/
-*.sqlite3
-webpack-stats.json
-.DS_Store
