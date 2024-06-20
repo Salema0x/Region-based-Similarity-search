@@ -1,17 +1,28 @@
 const path = require("path");
 const BundleTracker = require("webpack-bundle-tracker");
+const webpack = require("webpack");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = {
   entry: {
     frontend: "./frontend/src/index.js",
   },
   output: {
-    path: path.resolve("./frontend/static/frontend/"),
+    path: path.resolve("./frontend/static/"),
     filename: "[name]-[fullhash].js",
-    publicPath: "static/frontend/",
+    publicPath: "static/",
     clean: true,
   },
   plugins: [
+    new CleanWebpackPlugin(),
+    
+    new HtmlWebpackPlugin({
+            template: "templates/frontend/index.html",
+            filename: "index.html",
+            inject: true
+        }),
+
     new BundleTracker({
       path: __dirname,
       filename: "./webpack-stats.json",
@@ -38,7 +49,7 @@ module.exports = {
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.jsx','.css'],
   },
-    watchOptions: {
+  watchOptions: {
     aggregateTimeout: 200, // Delay before rebuilding
     ignored: /node_modules/, // Ignore changes to node_modules
     poll: 1000, // Check for changes every second
