@@ -1,53 +1,27 @@
-# Image search using Django & React
+# Region-based image similarity search
 
-## Docker
+## Usage
 1. Clone the project
-2. Run with docker-compose
-    ```bash
-    cd fopra-region-based-similarity-search
-    docker compose up -d
-    ```
-The webserver now runs on `localhost:8000`.
+2. Go to app directory `cd fopra-region-based-similarity-search/project`
+3. Download model and unpack `./get_model.sh`
+4. Start containers:
+    - Run on CPU: `docker-compose up -d`
+    - Or, if a GPU is available, run on GPU: `docker-compose --env-file ./.env.gpu up -d`
+5. Download OpenImages ES index and import data into ES: `docker exec project /tools/import_openimages.sh`
+6. Go to `127.0.0.1:8000`.
 
 
-## Manual Build
+## Reference
 
-Download the code
-```bash
-git clone https://github.com/umr-ds/fopra-region-based-similarity-search.git
-cd fopra-region-based-similarity-search/project
+Reference to ElasticHash :
+
 ```
-
-### 👉 Build `React Frontend`
-```bash
-yarn       # Install React
-yarn dev   # development build (with LIVE Reload) using webpack
-yarn build # production build
+@InProceedings{korfhage2021elastichash,
+  title="ElasticHash: Semantic Image Similarity Search by Deep Hashing with Elasticsearch",
+  author={Korfhage, Nikolaus and M{\"u}hling, Markus and Freisleben, Bernd},
+  booktitle="Computer Analysis of Images and Patterns",
+  year="2021",
+  publisher="Springer International Publishing",
+  pages="14--23",
+}
 ```
-
-### 👉 Build `Django Backend` 
-1. Install modules via `VENV`
-    ```bash
-    virtualenv env
-    source env/bin/activate
-    pip install -r ./requirements.txt
-    ```
-    (or on windows)
-    ```bash
-    python -m venv venv
-    ./venv/Scripts/activate
-    pip install -r ./requirements.txt
-    ```
-
-2. Set Up Database
-    ```bash
-    python ./manage.py makemigrations
-    python ./manage.py migrate
-    ```
-
-3. Start the APP
-    ```bash
-    python ./manage.py runserver       # start the project
-    ```
-
-At this point, the app runs at `http://127.0.0.1:8000/`.
