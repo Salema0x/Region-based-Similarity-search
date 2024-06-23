@@ -1,0 +1,89 @@
+version: "3"
+
+services:
+
+  project:
+    container_name: project
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    ports: 
+      - "8000:8000"
+    depends_on:
+      - tf-serving
+    environment:
+      - TF_SERVING_HOST=tf-serving
+      - TF_SERVING_PORT=8501
+      - TF_MODELNAME=${TF_MODELNAME}
+      - GUNICORN_WORKERS=5
+      - IMG_WIDTH=300
+      - IMG_HEIGHT=300
+    volumes:
+      - ./:/project
+      - ./tools/:/tools # Needed only for import
+      # Uncomment and modify this line for indexing a local directory
+      # - path/to/mage_dir/:/app/static/images/
+    restart: always
+
+  nginx:
+    container_name: project_nginx
+    image: nginx:1-alpine
+    restart: always
+    depends_on:
+      - webpacker
+      - project
+    ports:
+      - ${APP_PORT}:8080
+    volumes:
+      - ./docker/nginx.conf:/etc/nginx/templates/default.conf.template
+      - ./:/project
+    #  - static-volume:/usr/share/nginx/html/static
+
+  tf-serving:
+    container_name: project_tf-serving
+    image: tensorflow/serving:${TFS_TAG}
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=${GPU_ID} #all
+      - MODEL_NAME=${TF_MODELNAME}
+    restart: always
+    # runtime: nvidia
+    volumes:
+      - ./models/1612964152/:/models/${TF_MODELNAME}/1
+
+  elasticsearch:
+    container_name: project_elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.10.4 # 7.17.13 #8.10.4
+    # First upgrade to 7.17, see https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-upgrade.html
+    restart: always
+    environment:
+      - "ES_JAVA_OPTS=-Xms768m -Xmx768m"
+      - "xpack.security.enabled=false"
+      - "discovery.type=single-node"
+    volumes:
+      - ./elasticsearch/data/:/usr/share/elasticsearch/data
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nproc: 4096
+      nofile:
+        soft: 65536
+        hard: 65536
+
+  webpacker:
+    image: node:latest
+    depends_on:
+      - project
+    environment:
+      - NODE_ENV=development
+    #environment:
+    #  - NODE_ENV=production  
+    volumes:
+      - ./:/project
+    #ports: # expose webpacker dev server port to app container
+    #   - 3035:3035
+    working_dir: /project
+    command: npm run dev
+
+volumes:
+  project:

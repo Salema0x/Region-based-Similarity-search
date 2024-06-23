@@ -1,0 +1,38 @@
+# Byte-compiled / optimized / DLL files
+__pycache__
+*.py[cod]
+*$py.class
+
+# Environments
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Django stuff:
+*.log
+*.sqlite3
+
+# Elastic
+elasticsearch/data/
+
+# React stuff
+node_modules/
+frontend/static/
+media_root/local/
+
+# Webpack
+webpack-stats.json
+
+# Models downloaded
+models/*
+
+
+.DS_Store
+
+.idea
+
+*.tar.gz
+*.csv
+

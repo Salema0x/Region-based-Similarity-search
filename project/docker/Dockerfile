@@ -1,9 +1,9 @@
 FROM node:21-bullseye-slim
 
-RUN apt update && apt upgrade && \
-	apt install -y --no-install-recommends python3-venv python3-pip curl
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends python3 python3-pip
 
-COPY project/ /project/
+COPY . /project/
 
 WORKDIR /project
 
@@ -26,4 +26,5 @@ RUN python3 manage.py makemigrations && \
 EXPOSE 8000
 
 # start webserver
-CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
+#CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["bash", "-c", "exec gunicorn app.wsgi:application --bind 0.0.0.0:8000 --workers ${GUNICORN_WORKERS}"]

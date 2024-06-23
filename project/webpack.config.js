@@ -6,9 +6,9 @@ module.exports = {
     frontend: "./frontend/src/index.js",
   },
   output: {
-    path: path.resolve("./frontend/static/frontend/"),
+    path: path.resolve("./frontend/static/"),
     filename: "[name]-[fullhash].js",
-    publicPath: "static/frontend/",
+    publicPath: "static/",
     clean: true,
   },
   plugins: [

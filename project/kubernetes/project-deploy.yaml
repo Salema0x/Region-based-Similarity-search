@@ -1,0 +1,191 @@
+# Nginx
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: nginx-conf
+data:
+  default.conf.template: |
+    server {
+        listen 8080;
+        client_max_body_size 2G;
+        keepalive_timeout  65;
+
+        include /etc/nginx/mime.types;
+        root /project;
+        
+        location / {
+            proxy_pass http://project:8000;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+        location /static/ {
+            alias /project/frontend/static/;
+            autoindex on;
+        }
+    }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  labels:
+    app: project-nginx
+spec:
+  selector:
+    matchLabels:
+      app: project-nginx
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: project-nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1-alpine
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - mountPath: /etc/nginx/templates/default.conf.template
+              name: vol-nginx-conf
+              subPath: default.conf.template
+            - mountPath: /usr/src/app/static
+              name: vol-static-volume
+              readOnly: true
+      volumes:
+        - configMap:
+            defaultMode: 420
+            name: nginx-conf
+          name: vol-nginx-conf
+        - hostPath:
+            path: /path/to/nginx/static
+            type: ""
+          name: vol-static-volume
+---
+# Tensorflow serving
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tfs
+  labels:
+    app: project-tfs
+spec:
+  selector:
+    matchLabels:
+      app: project-tfs
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: project-tfs
+    spec:
+      containers:
+        - name: tf-serving
+          image: tensorflow/serving:2.4.0-gpu
+          imagePullPolicy: Always
+          env:
+            - name: NVIDIA_VISIBLE_DEVICES
+              value: "7"
+            - name: MODEL_NAME
+              value: "export"
+            - name: MODEL_BASE_PATH
+              value: "/data/models/"
+          volumeMounts:
+            - mountPath: /data
+              name: vol-project
+      volumes:
+        - hostPath:
+            path: /path/to/project
+            type: ""
+          name: vol-project
+# Web GUI
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: project
+  labels:
+    app: umr-project
+spec:
+  selector:
+    matchLabels:
+      app: umr-project
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: umr-project
+    spec:
+      containers:
+        - name: project
+          image: umr/project
+          imagePullPolicy: Always
+          env:
+            - name: TF_SERVING_HOST
+              value: "tf-serving"
+            - name: TF_SERVING_PORT
+              value: "8501"
+            - name: TF_MODELNAME
+              value: "export"
+            - name: GUNICORN_WORKERS
+              value: "4"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: project
+  labels:
+    app: project
+spec:
+  ports:
+    - port: 8000
+      targetPort: 8000
+      protocol: TCP
+  selector:
+    app: project
+---
+apiVersion: v1
+kind: Service/project
+metadata:
+  name: tf-serving
+  labels:
+    app: project-tfs
+spec:
+  ports:
+    - port: 8501
+      targetPort: 8501
+      protocol: TCP
+  selector:
+    app: project-tfs
+---
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: nginx
+      labels:
+        app: project-nginx
+    spec:
+      ports:
+        - port: 80
+          targetPort: 8080
+          protocol: TCP
+      selector:
+        app: project-nginx
+---
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: nginx-exposed
+      labels:
+        app: project-nginx-exposed
+    spec:
+      type: NodePort
+      ports:
+        - port: 80
+          targetPort: 8080
+          nodePort: 9376
+      selector:
+        app: project-nginx
