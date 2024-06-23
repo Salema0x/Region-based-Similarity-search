@@ -86,13 +86,6 @@ class CropImageSearch extends PureComponent {
         const {imageSrc, width, height, x, y} = this.props;
         const { numberResults } = this.state;
 
-        let bottom_right_x = x + width;
-        let bottom_right_y = y + height;
-        let boxes = [{
-            top_left    : {x, y}, 
-            bottom_right: {bottom_right_x, bottom_right_y}
-        }];
-
         let pulledData = [];
 
         let file = await fetch(imageSrc)
@@ -106,9 +99,12 @@ class CropImageSearch extends PureComponent {
         switch (this.state.radioValue){
             //box prompt: query data from server
             case 'searchArea':
-                formData.append("boxes", boxes);
+                formData.append("left", x | 0);
+                formData.append("top", y | 0);
+                formData.append("right", (x + width) | 0);
+                formData.append("bottom", (y  + height) | 0);
                 try{
-                    const result = await fetch(window.location.origin + window.location.pathname +'api/search_image_box/',{
+                    const result = await fetch(window.location.origin + window.location.pathname +'api/searchbox/',{
                         method: 'POST',
                         body: formData
                     });
@@ -136,65 +132,43 @@ class CropImageSearch extends PureComponent {
                 this.getImagePortion(this.imageObject, width, height, x, y);
         }
 
-        //test data //todo remove all the following instructions from this function
-        const dummyData = [{
-            duration: 0.15,
-            images: [
-            {
-                thumbnailSrc    : 'https://picsum.photos/id/234/300/300',
-                enlargedSrc     : 'https://picsum.photos/id/234/1024/1024',
-                title           : 'Paris',
-                author          : 'Georges Pompidouz',
-                license         : '<span className="small">This image is listed in <a href="https://storage.googleapis.com/openimages/web/index.html">Open Images Dataset</a> as having a CC BY 2.0 license</span>',
-                similarity      : '0.98'
-            },
-            {
-                thumbnailSrc    : 'https://picsum.photos/id/236/300/300',
-                enlargedSrc     : 'https://picsum.photos/id/236/1024/1024',
-                title           : 'Mountain',
-                author          : '#+/&$}3!^_:-',
-                license         : 'Youtube license',
-                similarity      : '0.98'
-            },
-            {
-                thumbnailSrc    : 'https://picsum.photos/id/237/300/300',
-                enlargedSrc     : 'https://picsum.photos/id/237/1024/1024',
-                title           : 'Dog',
-                author          : 'Skooby Dog',
-                license         : '',
-                similarity      : '0.9'
-            },
-            {
-                thumbnailSrc    : 'https://picsum.photos/id/238/300/300',
-                enlargedSrc     : 'https://picsum.photos/id/238/1024/1024',
-                title           : 'Sky crapper',
-                author          : 'NYC',
-                license         : '<span className="small">This image is listed in <a href="https://storage.googleapis.com/openimages/web/index.html">Open Images Dataset</a> as having a CC BY 2.0 license</span>',
-                similarity      : '0.85'
-            },
-            {
-                thumbnailSrc    : 'https://picsum.photos/id/239/300/300',
-                enlargedSrc     : 'https://picsum.photos/id/239/1024/1024',
-                title           : 'Soft flower',
-                author          : 'Angel',
-                license         : 'Free Editor License',
-                similarity      : '0.8'
-            },
-            {
-                thumbnailSrc    : 'https://picsum.photos/id/106/300/300',
-                enlargedSrc     : 'https://picsum.photos/id/106/2048/1024',
-                title           : 'Natural flowers tree',
-                author          : '<a href="https://www.flickr.com/people/courtbean/">Courtney Boyd Myers</a> (<a href="https://creativecommons.org/licenses/by/2.0/">License</a>)',
-                license         : '<span className="small">This image is listed in <a href="https://storage.googleapis.com/openimages/web/index.html">Open Images Dataset</a> as having a CC BY 2.0 license</span>',
-                similarity      : '0.77'
-            }],
-            thumbs_url:[], 
-            images_url:[]
-        }];
-        pulledData = pulledData.length > 0 ? pulledData : dummyData;
+        //dummy data for an overview of structure of the result
+        //max score is 256, so goal of progressbar in imagesViewer is 256
+        const dummyData = {
+            "duration": 0.2977478504180908,
+            "images": [
+                {
+                    "imageid": "3hyfHJABRSWQLZJ7jlw8",
+                    "id": 0,
+                    "score": 184,
+                    "imagepath": "https://c1.staticflickr.com/3/2852/11906222413_2e20cac437_b.jpg",
+                    "thumbpath": "https://c1.staticflickr.com/3/2852/11906222413_2e20cac437_b.jpg",
+                    "imageinfo": {
+                        "license": "https://creativecommons.org/licenses/by/2.0/",
+                        "authorprofileurl": "https://www.flickr.com/people/ssoosay/",
+                        "author": "Surian Soosay",
+                        "title": "Laser Biopsy"
+                    }
+                },
+                {
+                    "imageid": "ATOjHJABRSWQLZJ771_C",
+                    "id": 1,
+                    "score": 178,
+                    "imagepath": "https://farm7.staticflickr.com/3909/14389208149_2333f3b5b5_b.jpg",
+                    "thumbpath": "https://farm7.staticflickr.com/3909/14389208149_2333f3b5b5_b.jpg",
+                    "imageinfo": {
+                        "license": "https://creativecommons.org/licenses/by/2.0/",
+                        "authorprofileurl": "https://www.flickr.com/people/ssoosay/",
+                        "author": "Surian Soosay",
+                        "title": "Snake Populations Decline / Boa Constricted"
+                    }
+                }
+            ],
+            "thumbs_url": "",
+            "images_url": ""
+        }
         console.log(pulledData);
-        this.props.sendDataToParent(pulledData, pulledData.length, pulledData.duration);
-        //this.props.sendDataToParent(pulledData, pulledData.images.length, pulledData.duration);
+        this.props.sendDataToParent(pulledData.images, pulledData.images.length, pulledData.duration);
     };
 
     render() {

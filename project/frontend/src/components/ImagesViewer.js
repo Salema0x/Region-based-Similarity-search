@@ -41,7 +41,8 @@ class ImagesViewer extends Component{
   
   render(){
     const {imagesData, currentImageData, currentIndexData} = this.state;
-    const similaritypercent = ( parseFloat(currentImageData.similarity)*100 ) + " %";
+    const maxScoreSimilarity = '256'
+    const similaritypercent = ( (parseFloat(currentImageData.score) / parseFloat(maxScoreSimilarity)) *100 ) + " %";
 
     return(
       <>
@@ -54,13 +55,13 @@ class ImagesViewer extends Component{
             </div>
             <button className='btnSlideLeftImg' title='Previous' onClick={() => this.loadDataByIndex(imagesData, (currentIndexData-1))}></button>
             <div className='ctnImgViewer'>
-                <img src={currentImageData.enlargedSrc}></img>
+                <img src={currentImageData.imagepath}></img>
             </div>
             <button className='btnSlideRightImg' title='Next' onClick={() => this.loadDataByIndex(imagesData, (currentIndexData+1))} ></button>
             <div className='captionImgViewer'>
-                <div className="captionImgInfos">Title: <b>{currentImageData.title}</b> <br/> 
-                    Author: <span dangerouslySetInnerHTML={{__html: currentImageData.author}} ></span>
-                    <p dangerouslySetInnerHTML={{__html: currentImageData.license}}></p>
+                <div className="captionImgInfos">Title: <b>{currentImageData.imageinfo.title}</b> <br/> 
+                    Author: <a target="_blank" href={currentImageData.imageinfo.authorprofileurl}> <span dangerouslySetInnerHTML={{__html: currentImageData.imageinfo.author}} ></span> </a>
+                    ( <a target="_blank" href={currentImageData.imageinfo.license}> License </a> )
                 </div>
                 <table className="progress-infos">
                     <tbody>
@@ -69,12 +70,12 @@ class ImagesViewer extends Component{
                             <td> 
                                 <span className="progress-container" title={similaritypercent}>
                                     <ProgressBar 
-                                        progress={currentImageData.similarity}
-                                        goal='1'
+                                        progress={currentImageData.score}
+                                        goal={maxScoreSimilarity}
                                     />
                                 </span>
                             </td>
-                            <td> <a className="searchbutton" href={encodeURI(window.location.origin + window.location.pathname +'?imgurl='+currentImageData.thumbnailSrc)}>Search</a> </td>
+                            <td> <a className="searchbutton" href={encodeURI(window.location.origin + window.location.pathname +'?imgurl='+currentImageData.imagepath)}>Search</a> </td>
                         </tr>
                     </tbody>
                 </table>

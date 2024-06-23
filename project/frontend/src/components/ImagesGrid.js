@@ -64,7 +64,7 @@ class TitleGrid extends Component {
         <div className='titlegrid'>
             {
             parseInt(this.props.datanumber) > 0 ?
-            (<h3>{this.props.datanumber} images found, took {this.props.dataduration} seconds</h3>) : 
+            (<h3>{this.props.datanumber} images found, took { parseFloat(this.props.dataduration).toFixed(2) } seconds</h3>) : 
             (<h3> No similar image found</h3>)
             }
         </div>
@@ -94,8 +94,8 @@ class ImagesCard extends Component  {
     render()  {
         return (
             <div className='itemImagesCard'>
-                <img className='imagesCard' src={this.props.owndata.thumbnailSrc} onClick={()=>this.props.viewImage(this.props.owndata)} />
-                <span className='caption'> <a className='searchbutton' href={encodeURI(window.location.origin + window.location.pathname +'?imgurl='+this.props.owndata.thumbnailSrc)}>Search</a> </span>
+                <img className='imagesCard' src={this.props.owndata.thumbpath} onClick={()=>this.props.viewImage(this.props.owndata)} />
+                <span className='caption'> <a className='searchbutton' href={encodeURI(window.location.origin + window.location.pathname +'?imgurl='+this.props.owndata.imagepath)}>Search</a> </span>
             </div>
         )
     }
