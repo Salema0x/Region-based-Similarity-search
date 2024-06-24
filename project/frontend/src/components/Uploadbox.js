@@ -30,6 +30,9 @@ class Uploadbox extends Component {
         event.preventDefault();
         const file = event.target.files[0];
         await new Promise(resolve => setTimeout(resolve, 1));
+        this.setState({
+            isLoading      : true
+        });
         this.prepareImg(file, false, event.target.value);
 
         //update the url in the browser's search bar
@@ -40,17 +43,19 @@ class Uploadbox extends Component {
         }
     };
 
-    prepareImg = (file, isFromLink, url) => {
+
+    prepareImg = async (file, isFromLink, url) => {
         if ( ["image/jpeg", "image/jpg", "image/png"].includes(file.type) ) {
             this.setState({
                 displayImageUrl : "",
                 fileInputImage  : ""
             });
+            let preparedImageUrl = await this.getResizedImageSearching(file);            
             if(isFromLink){
                 this.setState({
                     fileInputUrl   : "",
                     fileInputImage : "",
-                    displayImageUrl: URL.createObjectURL(file),
+                    displayImageUrl: preparedImageUrl,
                     inputUrl       : url,
                     isLoading      : false,
                     isError        : false
@@ -58,9 +63,10 @@ class Uploadbox extends Component {
             } else {
                 this.setState({
                     fileInputUrl   : url,
-                    fileInputImage : URL.createObjectURL(file),
-                    displayImageUrl: URL.createObjectURL(file),
+                    fileInputImage : preparedImageUrl,
+                    displayImageUrl: preparedImageUrl,
                     inputUrl       : "",
+                    isLoading      : false,
                     isError        : false
                 });
             }
@@ -71,6 +77,49 @@ class Uploadbox extends Component {
             });
         }
     };
+
+
+    getResizedImageSearching = async (file) => {
+        let urlImageResized = "";
+        let maxTimeImageResize = 30000;
+        const maxDimension = 400; //max height 400px and max width 400px
+        const reader = new FileReader();
+            reader.onload = async function(readerEvent) {
+                const image = new Image();
+                image.onload = function(imageEvent) {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    let width = image.width;
+                    let height = image.height;
+                    if (width > height) {
+                        if (width > maxDimension) {
+                            height *= maxDimension / width;
+                            width = maxDimension;
+                        }
+                    } else {
+                        if (height > maxDimension) {
+                            width *= maxDimension / height;
+                            height = maxDimension;
+                        }
+                    }
+                    canvas.width = width;
+                    canvas.height = height;
+                    ctx.drawImage(image, 0, 0, width, height);
+                    canvas.toBlob(function(blob) {
+                        urlImageResized = URL.createObjectURL(blob);
+                        //URL.revokeObjectURL(urlImageResized);
+                    }, 'image/png');
+                }
+                image.src = readerEvent.target.result;
+            }
+            reader.readAsDataURL(file);
+            while(urlImageResized == "" && maxTimeImageResize>0) {
+                await new Promise(resolve => setTimeout(resolve, 500));
+                maxTimeImageResize -= 500;
+            }
+            return urlImageResized == "" ?  URL.createObjectURL(file) : urlImageResized;
+    };
+
 
     removeImg = () => {
         this.form.current.reset();
@@ -88,6 +137,9 @@ class Uploadbox extends Component {
         let file = await fetch(this.props.searchImgUrl)
                         .then(r => r.blob())
                         .then(blobFile => new File([blobFile], "fileNameGoesHere", { type: blobFile.type }))
+        this.setState({
+            isLoading      : true
+        });
         this.prepareImg(file, true, this.props.searchImgUrl);
     };
 
@@ -122,6 +174,9 @@ class Uploadbox extends Component {
         e.stopPropagation();
         this.setState({dragActive : false});
         if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+            this.setState({
+                isLoading      : true
+            });
             this.prepareImg(e.target.files[0], false, e.target.value);
         }
     };

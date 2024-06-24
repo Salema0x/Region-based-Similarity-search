@@ -149,7 +149,6 @@ def search_image_box(request):
     """
     images = []
     error = ""
-    str = ""
     querytime = 0
     max_results = cfg.ES_MAX_RESULTS
 
@@ -181,14 +180,13 @@ def search_image_box(request):
         imgcropped = pillowed_image.crop((left, top, right, bottom))
         images = searchSimilarWholeImages(imgcropped, max_results, False)
         querytime = time.time() - start
-        "left:" + left + ", top:" + top + ", right:" + right + ", bottom:" + bottom
 
     except Exception as e:
         logger.error(e, exc_info=True)
     
     return Response({'duration':querytime,
                     'images':images,
-                    'thumbs_url': str, 
+                    'thumbs_url': cfg.THUMBS_URL, 
                     'images_url':cfg.IMAGES_URL}, 
                     status=status.HTTP_201_CREATED)
 

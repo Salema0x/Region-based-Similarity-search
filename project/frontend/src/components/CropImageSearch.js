@@ -130,6 +130,7 @@ class CropImageSearch extends PureComponent {
             //just crop the image
             default:
                 this.getImagePortion(this.imageObject, width, height, x, y);
+                this.props.setLoaderImages(false);
         }
 
         //dummy data for an overview of structure of the result
