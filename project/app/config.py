@@ -24,8 +24,7 @@ class Config:
     ES_MAX_RESULTS = 1000
     ES_URL = get_env("ES_URL", "http://elasticsearch:9200/es-retrieval/_search?size=")
 
-    #todo with open("/project/app/templates/es_query.7.x.json", 'r') as file:
-    with open("../project/app/templates/es_query.7.x.json", 'r') as file:
+    with open("/project/app/templates/es_query.7.x.json", 'r') as file:
         EL_QUERY_TPL = file.read()
 
     # Image settings
