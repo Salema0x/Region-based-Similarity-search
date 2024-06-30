@@ -5,9 +5,9 @@
 2. Go to app directory `cd fopra-region-based-similarity-search/project`
 3. Download model and unpack `./get_model.sh`
 4. Start containers:
-    - Run on CPU: `docker-compose up -d`
-    - Or, if a GPU is available, run on GPU: `docker-compose --env-file ./.env.gpu up -d`
-5. Download OpenImages ES index and import data into ES: `docker exec project /tools/import_openimages.sh`
+    - Run on CPU: `docker compose up -d`
+    - Or, if a GPU is available, run on GPU: `docker compose --env-file ./.env.gpu up -d`
+5. Download OpenImages ES index and import data into ES: `docker compose exec project tools/import_openimages.sh`
 6. Go to `127.0.0.1:80` or `http://localhost`.
 
 
