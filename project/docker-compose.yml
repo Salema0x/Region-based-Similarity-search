@@ -18,6 +18,9 @@ services:
       - GUNICORN_WORKERS=5
       - IMG_WIDTH=300
       - IMG_HEIGHT=300
+      - DJANGO_DEBUG=${DJANGO_DEBUG}
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+      - DJANGO_ALLOWED_HOSTS=${DJANGO_ALLOWED_HOSTS}
     volumes:
       - ./:/project
       - ./tools/:/tools # Needed only for import
