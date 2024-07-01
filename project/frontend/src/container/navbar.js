@@ -8,58 +8,26 @@ function Navbar() {
     <>
 
   <nav className="navbar has-background-grey-light" role="navigation" aria-label="main navigation">
-   <div className="navbar-brand">
-    <a className="navbar-item" href="https://pc12439.mathematik.uni-marburg.de/elastichash/">
-      <img src={ai} width="112" height="28"/>
-    </a>
-
-    <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-    </a>
-  </div>
-
-  <div id="navbarBasicExample" className="navbar-menu">
-    <div className="navbar-start">
-      <a className="navbar-item">
-        Home
+    <div className="navbar-brand">
+      <a className="navbar-item" href="http://dsgw.mathematik.uni-marburg.de:32855/">
+        <img src={ai} width="auto" height="auto"/>
       </a>
 
-      <a className="navbar-item">
-        Documentation
+      <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
       </a>
+    </div>
 
-      <div className="navbar-item has-dropdown is-hoverable">
-        <a className="navbar-link">
-          More
+    <div id="navbarBasicExample" className="navbar-menu">
+      <div className="navbar-start">
+        <a className="navbar-item">
+          Region-based image similarity search
         </a>
-
-        <div className="navbar-dropdown">
-          <a className="navbar-item">
-            About
-          </a>
-          <a className="navbar-item">
-            Contact
-          </a>
-          
-        </div>
       </div>
-    </div>
-
-    <div className="navbar-end">
-      <div className="navbar-item">
-        <div className="buttons">
-          <a className="button is-primary">
-            <strong>Sign up</strong>
-          </a>
-          <a className="button is-light">
-            Log in
-          </a>
-        </div>
-      </div>
-    </div>
   </div>
+
 </nav>
 </>
   )

@@ -5,7 +5,6 @@ const Upload = () => {
     const [fileUrl, setFileUrl] = useState('');
     const [inputUrl, setInputUrl] = useState('');
     const [displayImageUrl, setDisplayImageUrl] = useState(''); // state to hold the image URL or the uploaded file URL
-    console.log('no flie');
 
     const handleFileChange = (event) => {
         console.log('no changes applies ');
@@ -28,14 +27,13 @@ const Upload = () => {
     return (
         
         <section className='section'>
-            <div className="columns">
+            <div className="columns is-justify-content-center">
                 <div className="column">
-                    <div className="notification is-link">
-                        <button className="delete"></button>
-                        Please upload your image or enter a URL for it, so I can perform AI-based image similarity analysis.
-                    </div>
-                    <div className="columns is-mobile">
+                    <div className="columns">
                         <div className="column">
+                            <div className="notification">
+                                Please upload your image or enter a URL for it, so I can perform AI-based image similarity analysis.
+                            </div>
                             <div className="card">
                                 <div className="card-content">
                                     <div className="file is-boxed">
