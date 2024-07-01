@@ -36,3 +36,5 @@ models/*
 *.tar.gz
 *.csv
 
+# Should only be used in production, keep secret otherwise
+.env
