@@ -22,7 +22,7 @@ services:
       - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
       - DJANGO_ALLOWED_HOSTS=${DJANGO_ALLOWED_HOSTS}
     volumes:
-      - ./:/project
+      - project:/project
       - ./tools/:/tools # Needed only for import
       # Uncomment and modify this line for indexing a local directory
       # - path/to/mage_dir/:/app/static/images/
@@ -39,7 +39,7 @@ services:
       - ${APP_PORT}:8080
     volumes:
       - ./docker/nginx.conf:/etc/nginx/templates/default.conf.template
-      - ./:/project
+      - project:/project
     #  - static-volume:/usr/share/nginx/html/static
 
   tf-serving:
@@ -82,7 +82,7 @@ services:
     #environment:
     #  - NODE_ENV=production  
     volumes:
-      - ./:/project
+      - project:/project
     #ports: # expose webpacker dev server port to app container
     #   - 3035:3035
     working_dir: /project

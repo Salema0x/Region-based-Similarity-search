@@ -10,6 +10,8 @@
 5. Download OpenImages ES index and import data into ES: `docker compose exec project tools/import_openimages.sh`
 6. Go to `127.0.0.1:80` or `http://localhost`.
 
+  **Hint**: Changes in the codebase outside of the containers are not directly reflected inside it anymore. To apply them to the image rebuild with `docker compose build` or `docker compose up -d --build`
+
 ## Getting production-ready
 0. If nessecary create a deploykey to clone the repo on the production server
 1. Create an `.env`-file and copy your preferred env file (`.env.cpu`/ `.env.gpu`) inside it
